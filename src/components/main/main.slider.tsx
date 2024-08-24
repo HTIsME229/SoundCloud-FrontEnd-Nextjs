@@ -9,7 +9,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Divider from '@mui/material/Divider';
 
-const MainSlider=()=>{
+const MainSlider = () => {
     const NextArrow = (props: any) => {
         return (
             <Button variant="outlined"
@@ -43,66 +43,66 @@ const MainSlider=()=>{
             </Button>
         )
     }
-   const settings:Settings= {
+    const settings: Settings = {
         dots: true,
         infinite: true,
         speed: 500,
-                slidesToShow:5,
+        slidesToShow: 5,
         slidesToScroll: 1,
-        arrows:true,
-        nextArrow:<NextArrow/>,
-        prevArrow:<PrevArrow></PrevArrow>
+        arrows: true,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow></PrevArrow>
 
-      };
-    return(
+    };
+    return (
         <Box
-        sx={{
-            margin: "0 50px",
-            ".abc": {
-                padding: "0 10px"
-            },
-            "h3": {
-                border: "1px solid #ccc",
-                padding: "20px",
-                height: "200px",
+            sx={{
+                margin: "0 50px",
+                ".abc": {
+                    padding: "0 10px"
+                },
+                "h3": {
+                    border: "1px solid #ccc",
+                    padding: "20px",
+                    height: "200px",
 
-            }
-        }}
-    >
-        <h2> Multiple tracks </h2>
+                }
+            }}
+        >
+            <h2> Multiple tracks </h2>
 
-        <Slider {...settings}>
-            <div className="abc">
-                <h3>Track 1</h3>
-            </div>
-            <div className="abc">
-                <h3>Track 2</h3>
-            </div>
-            <div className="abc">
-                <h3>Track 3</h3>
-            </div>
-            <div className="abc">
-                <h3>Track 4</h3>
-            </div>
-            <div className="abc">
-                <h3>Track 5</h3>
-            </div>
-            <div className="abc">
-                <h3>Track 6</h3>
-            </div>
-            <div className="abc">
-                <h3>Track 7</h3>
-            </div>
-            <div className="abc">
-                <h3>Track 8</h3>
-            </div>
-            <div className="abc">
-                <h3>Track 9</h3>
-            </div>
-        </Slider>
-        <Divider />
-    </Box>
-     
+            <Slider {...settings}>
+                <div className="abc">
+                    <h3>Track 1</h3>
+                </div>
+                <div className="abc">
+                    <h3>Track 2</h3>
+                </div>
+                <div className="abc">
+                    <h3>Track 3</h3>
+                </div>
+                <div className="abc">
+                    <h3>Track 4</h3>
+                </div>
+                <div className="abc">
+                    <h3>Track 5</h3>
+                </div>
+                <div className="abc">
+                    <h3>Track 6</h3>
+                </div>
+                <div className="abc">
+                    <h3>Track 7</h3>
+                </div>
+                <div className="abc">
+                    <h3>Track 8</h3>
+                </div>
+                <div className="abc">
+                    <h3>Track 9</h3>
+                </div>
+            </Slider>
+            <Divider />
+        </Box>
+
     )
 }
 export default MainSlider
