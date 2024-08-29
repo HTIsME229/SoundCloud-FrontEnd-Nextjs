@@ -28,5 +28,13 @@ declare global {
         },
         result: T[]
     }
+    interface ITrack {
+        "id": number,
+        "title": string,
+        "description": string,
+        "url": string,
+        "imgUrl": string,
+        "category": string
+    }
 
 }
