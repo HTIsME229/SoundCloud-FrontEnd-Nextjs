@@ -6,7 +6,12 @@ import { url } from "inspector";
 import { METHODS } from "http";
 import { sendRequest } from "./utils/api";
 import { Console } from "console";
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import { stringify } from "querystring";
+
 export default async function HomePage() {
+  // const session = await getServerSession(authOptions);
 
   const Chill = await sendRequest<IBackendRes<IModelPaginate<ITrack>>>(
     {

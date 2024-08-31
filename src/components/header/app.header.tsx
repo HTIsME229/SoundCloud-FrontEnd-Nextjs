@@ -16,10 +16,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Container } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -63,6 +64,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function AppHeader() {
+  const { data: session } = useSession();
+
   const router = useRouter()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -80,8 +83,10 @@ export default function AppHeader() {
   };
 
   const handleMenuClose = () => {
+
     setAnchorEl(null);
     handleMobileMenuClose();
+
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -91,7 +96,7 @@ export default function AppHeader() {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
-    sx={{        "a":{color:"unset",textDecoration:"none"}}}
+      sx={{ "a": { color: "unset", textDecoration: "none" } }}
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'bottom',
@@ -108,8 +113,12 @@ export default function AppHeader() {
       onClose={handleMenuClose}
     >
       <MenuItem ><Link href="/profile">Profile</Link></MenuItem>
-      <MenuItem onClick={handleMenuClose}>Log Out </MenuItem>
-    </Menu>
+      <MenuItem onClick={() => {
+        handleMenuClose
+        signOut()
+      }
+      }>Log Out </MenuItem>
+    </Menu >
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -129,7 +138,7 @@ export default function AppHeader() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-          <MenuItem>
+      <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
             <MailIcon />
@@ -161,70 +170,74 @@ export default function AppHeader() {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
-  
+
     </Menu>
-     
+
   );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-     
-      <AppBar 
-      position="static"
-      sx={{
-        backgroundColor:"#4c5c6c"
-      }}
-       >
-      <Container>
-      <Toolbar>
-          <Typography onClick={()=>router.push("/")}
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' },cursor:"pointer" }}
-          >
-            Sound Clound 
-          </Typography>
-          <Search >
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, "a":{color:"unset",textDecoration:"none"} }}>
-                <MenuItem >
-                  <Typography  textAlign="center"><Link  href="/playlist" >Playlists</Link></Typography>
-                </MenuItem>
-                <MenuItem >
-                  <Typography  textAlign="center"><Link href="/upload">Upload</Link></Typography>
-                </MenuItem>
-                <MenuItem >
-                  <Typography  textAlign="center"><Link href="/like">Likes</Link></Typography>
-                </MenuItem>
-          <Avatar onClick={handleProfileMenuOpen}
-          sx={{
-            marginLeft:"10px"
-          }}>HT</Avatar>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
+
+      <AppBar
+        position="static"
+        sx={{
+          backgroundColor: "#4c5c6c"
+        }}
+      >
+        <Container>
+          <Toolbar>
+            <Typography onClick={() => router.push("/")}
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' }, cursor: "pointer" }}
             >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </Container>
-       
+              Sound Clound
+            </Typography>
+            <Search >
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
+              />
+            </Search>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, "a": { color: "unset", textDecoration: "none" } }}>
+              {session && session !== undefined ? <>
+                <MenuItem >
+                  <Typography textAlign="center"><Link href="/playlist" >Playlists</Link></Typography>
+                </MenuItem>
+                <MenuItem >
+                  <Typography textAlign="center"><Link href="/upload">Upload</Link></Typography>
+                </MenuItem>
+                <MenuItem >
+                  <Typography textAlign="center"><Link href="/like">Likes</Link></Typography>
+                </MenuItem>
+                <Avatar onClick={handleProfileMenuOpen}
+                  sx={{
+                    marginLeft: "10px"
+                  }}>HT</Avatar></> : <Typography textAlign="center"><Link href="#" onClick={() => signIn()}>Login</Link></Typography>
+              }
+
+            </Box>
+
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </Container>
+
       </AppBar>
       {renderMobileMenu}
       {renderMenu}

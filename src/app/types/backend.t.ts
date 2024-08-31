@@ -18,6 +18,18 @@ declare global {
         statusCode: number | string;
         data?: T;
     }
+    interface IAuth {
+        access_token: string,
+        refresh_token: string
+        user: {
+            id: number
+            type: string
+            username: string
+            role: string
+            isVerify: true
+            email: string,
+        }
+    }
 
     interface IModelPaginate<T> {
         meta: {

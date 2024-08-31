@@ -15,7 +15,7 @@ const MainFooter = (props: any) => {
   const hasMouted = useHasMounted();
   if (!hasMouted) return (<></>)
   return (
-    <Container sx={{ display: "flex", backgroundColor: "#FFF", gap: '50px', boxShadow: "0 0 3px 0 rgba(0, 0, 0, 0.2)", position: "relative" }}>
+    <Container sx={{ display: "flex", backgroundColor: "#FFF", gap: '50px', boxShadow: "0 0 3px 0 rgba(0, 0, 0, 0.2)", position: "sticky", bottom: "20px  " }}>
       <AudioPlayer
         style={{ boxShadow: "none" }}
 

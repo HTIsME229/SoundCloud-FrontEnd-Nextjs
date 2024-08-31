@@ -28,7 +28,7 @@ export const sendRequest = async <T>(props: IRequest) => {
 
     return fetch(url, options).then(res => {
         if (res.ok) {
-            console.log("check url", url)
+
             return res.json() as T;
 
         } else {
