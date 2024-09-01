@@ -1,18 +1,20 @@
 import AppHeader from "@/components/header/app.header";
 import MainSlider from "@/components/main/main.slider";
 import { Container } from "@mui/material";
-import { sendRequestJS } from "./utils/oldapi";
+
 import { url } from "inspector";
 import { METHODS } from "http";
-import { sendRequest } from "./utils/api";
+
 import { Console } from "console";
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "./api/auth/[...nextauth]/route";
+
 import { stringify } from "querystring";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { sendRequest } from "../utils/api";
 
 export default async function HomePage() {
-  const session = await getServerSession(authOptions);
-  console.log("check", session)
+  // const session = await getServerSession(authOptions);
+  // console.log("check", session)
   const Chill = await sendRequest<IBackendRes<IModelPaginate<ITrack>>>(
     {
 
