@@ -11,8 +11,8 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 import { stringify } from "querystring";
 
 export default async function HomePage() {
-  // const session = await getServerSession(authOptions);
-
+  const session = await getServerSession(authOptions);
+  console.log("check", session)
   const Chill = await sendRequest<IBackendRes<IModelPaginate<ITrack>>>(
     {
 
