@@ -10,19 +10,22 @@ import NextAuthWrapper from '@/lib/next.auth.wrapper';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // const [showFooter, setShowFooter] = useState(true)
   return (
+    <html lang="en">
+      <body>
+        <ThemeRegistry>
+          {/* <SessionProvider> */}
+          <NextAuthWrapper >
 
-    <>
-      <AppHeader></AppHeader>
-      {children}
-      <MainFooter></MainFooter>
-
-    </>
-
-
+            {children}
 
 
 
+          </NextAuthWrapper>
 
 
+          {/* </SessionProvider> */}
+        </ThemeRegistry>
+      </body>
+    </html>
   );
 }

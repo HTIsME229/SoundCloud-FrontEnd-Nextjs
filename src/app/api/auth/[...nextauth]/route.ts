@@ -2,8 +2,9 @@ import { sendRequest } from "@/app/utils/api";
 import nextAuth, { AuthOptions } from "next-auth"
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-let res: IBackendRes<IAuth>;
+
 export const authOptions: AuthOptions = {
+
     secret: process.env.NO_SECRET!,
     providers: [
         GitHubProvider({
@@ -11,6 +12,7 @@ export const authOptions: AuthOptions = {
             clientSecret: process.env.GITHUB_SECRET!,
         }),
         CredentialsProvider({
+
             // The name to display on the sign in form (e.g. "Sign in with...")
             name: "Credentials",
             // `credentials` is used to generate a form on the sign in page.
@@ -23,7 +25,7 @@ export const authOptions: AuthOptions = {
             },
             async authorize(credentials, req) {
                 // Add logic here to look up the user from the credentials supplied
-                res = await sendRequest<IBackendRes<IAuth>>(
+                const res = await sendRequest<IBackendRes<IAuth>>(
                     {
                         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/auth/login`,
                         method: "Post",
@@ -35,7 +37,6 @@ export const authOptions: AuthOptions = {
                     }
 
                 )
-
 
                 if (res.data) {
                     // Any object returned will be saved in `user` property of the JWT
@@ -51,9 +52,10 @@ export const authOptions: AuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user, account, profile, trigger }) {
+
             if (trigger == "signIn" && account?.provider !== "credentials") {
-                console.log("check provider", account?.provider)
-                res = await sendRequest<IBackendRes<IAuth>>(
+
+                const res = await sendRequest<IBackendRes<IAuth>>(
                     {
                         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/auth/social-media`,
                         method: "Post",
@@ -71,14 +73,15 @@ export const authOptions: AuthOptions = {
 
 
             }
-            else {
-                if (res.data) {
-                    token.access_token = res.data.access_token
-                    token.refresh_token = res.data.refresh_token
-                    token.user = res.data.user
-
-                }
+            if (trigger == "signIn" && account?.provider === "credentials") {
+                token.access_token = user.access_token
+                token.refresh_token = user.refresh_token
+                token.user = user.user
             }
+
+
+
+
 
 
             return token;
@@ -89,7 +92,16 @@ export const authOptions: AuthOptions = {
             session.refresh_token = token.refresh_token
             session.user = token.user
             return session
-        }
+        },
+        async redirect({ url, baseUrl }) {
+            // Chuyển hướng đến trang chủ sau khi đăng nhập thành công
+            return baseUrl;
+        },
+
+    },
+    pages: {
+        signIn: '/auth/signin',
+
     }
 }
 const handler = nextAuth(authOptions)
