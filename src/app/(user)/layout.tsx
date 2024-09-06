@@ -14,8 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <>
       <AppHeader></AppHeader>
       {children}
-      <MainFooter></MainFooter>
-
+      <MainFooter ></MainFooter>
     </>
 
 

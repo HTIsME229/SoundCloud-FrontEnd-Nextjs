@@ -210,7 +210,7 @@ export default function AppHeader() {
                   <Typography textAlign="center"><Link href="/playlist" >Playlists</Link></Typography>
                 </MenuItem>
                 <MenuItem >
-                  <Typography textAlign="center"><Link href="/upload">Upload</Link></Typography>
+                  <Typography textAlign="center"><Link href="/track/upload">Upload</Link></Typography>
                 </MenuItem>
                 <MenuItem >
                   <Typography textAlign="center"><Link href="/like">Likes</Link></Typography>

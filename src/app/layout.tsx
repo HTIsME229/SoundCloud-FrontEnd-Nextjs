@@ -11,19 +11,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   // const [showFooter, setShowFooter] = useState(true)
   return (
     <html lang="en">
-      <body>
+      <body style={{ height: '100vh' }}>
         <ThemeRegistry>
-          {/* <SessionProvider> */}
           <NextAuthWrapper >
-
             {children}
-
-
-
           </NextAuthWrapper>
-
-
-          {/* </SessionProvider> */}
         </ThemeRegistry>
       </body>
     </html>

@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 const SignInPage = async () => {
 
     const session = await getServerSession(authOptions);
-    console.log("check seesion", session)
     if (session) {
         redirect("/")
     }
