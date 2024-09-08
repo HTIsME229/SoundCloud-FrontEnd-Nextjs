@@ -58,7 +58,8 @@ const UploadTab = () => {
 
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
-                    <Information trackUpload={trackUpload}
+                    <Information setPercent={setPercent}
+                        trackUpload={trackUpload}
                         percent={percent}
                     ></Information>
                 </CustomTabPanel>

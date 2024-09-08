@@ -4,7 +4,7 @@ import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgres
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+export default function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%', mr: 1 }}>
@@ -16,19 +16,6 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
                     sx={{ color: 'text.secondary' }}
                 >{`${Math.round(props.value)}%`}</Typography>
             </Box>
-        </Box>
-    );
-}
-interface Iprops {
-    percent: number
-}
-
-export default function LinearWithValueLabel(props: Iprops) {
-
-
-    return (
-        <Box sx={{ width: '100%' }}>
-            <LinearProgressWithLabel value={props.percent} />
         </Box>
     );
 }

@@ -36,6 +36,7 @@ const Step1 = (props: Iprops) => {
                 onUploadProgress: progressEvent => {
                     let percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total!);
                     props.setPercent(percentCompleted)
+
                 }
 
             }
@@ -45,8 +46,6 @@ const Step1 = (props: Iprops) => {
             }
 
         }
-
-        console.log(acceptedFiles)
     }, [session])
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
         onDrop,
@@ -68,7 +67,7 @@ const Step1 = (props: Iprops) => {
             <div {...getRootProps({ className: 'dropzone' })}>
                 <input {...getInputProps()} />
                 <p>Drag 'n' drop some files here, or click to select files</p>
-                <InputFileUpload></InputFileUpload>
+                <InputFileUpload setPercent={props.setPercent} setValue={props.setValue} setTrackUpload={props.setTrackUpload} target='TrackAudio'></InputFileUpload>
             </div>
             <aside>
                 <h4>Files</h4>

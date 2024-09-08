@@ -48,5 +48,12 @@ declare global {
         "imgUrl": string,
         "category": string
     }
+    interface INewTrack {
+        title: string,
+        description: string,
+        url: string,
+        imgUrl: string,
+        category: string
+    }
 
 }
