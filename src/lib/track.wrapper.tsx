@@ -12,7 +12,8 @@ export const TrackContextProvider = ({ children }: { children: React.ReactNode }
         url: "",
         imgUrl: "",
         category: "",
-        isPlaying: false
+        isPlaying: false,
+        currentTime: -0
 
 
     }

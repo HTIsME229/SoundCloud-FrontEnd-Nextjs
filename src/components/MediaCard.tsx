@@ -22,16 +22,29 @@ interface Iprops {
 export default function MediaControlCard(props: Iprops) {
   const theme = useTheme();
   const { currentTrack, setCurrentTrack } = React.useContext(TrackContext) as ITrackContext
+  const handleClickForward = () => {
+    setCurrentTrack({
+      ...currentTrack,
+      currentTime: 5
+    })
+  };
 
+  const handleClickBack = () => {
+    setCurrentTrack({
+      ...currentTrack,
+      currentTime: -5
+    })
+  };
 
   const handlePlay = () => {
 
-    if (props.url != currentTrack.url) {
+    if (props.id != currentTrack.id) {
       setCurrentTrack({
         ...currentTrack,
         id: props.id,
         imgUrl: props.imgUrl,
         title: props.title,
+        description: props.description,
         url: props.url,
         isPlaying: true
       })
@@ -42,6 +55,7 @@ export default function MediaControlCard(props: Iprops) {
         id: props.id,
         imgUrl: props.imgUrl,
         title: props.title,
+        description: props.description,
         url: props.url,
         isPlaying: !currentTrack.isPlaying,
       })
@@ -69,7 +83,7 @@ export default function MediaControlCard(props: Iprops) {
           </Typography>
         </CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-          <IconButton aria-label="previous">
+          <IconButton onClick={handleClickBack} aria-label="previous">
             {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
           </IconButton>
           <IconButton
@@ -80,8 +94,8 @@ export default function MediaControlCard(props: Iprops) {
             }} aria-label="play/pause">
             {currentTrack.id == props.id && currentTrack.isPlaying ? <PauseIcon sx={{ height: 38, width: 38 }} /> : <PlayArrowIcon sx={{ height: 38, width: 38 }} />}
 
-          </IconButton>
-          <IconButton aria-label="next">
+          </IconButton   >
+          <IconButton onClick={handleClickForward} aria-label="next">
             {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
           </IconButton>
         </Box>

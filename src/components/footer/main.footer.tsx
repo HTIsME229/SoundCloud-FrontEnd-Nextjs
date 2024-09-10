@@ -11,17 +11,32 @@ const MainFooter = (props: any) => {
   const { currentTrack, setCurrentTrack } = useContext(TrackContext) as ITrackContext
   const audioPlayerRef = useRef<any>(null);
 
+
+  const audioEl = audioPlayerRef.current?.audio?.current;
   useEffect(() => {
-    const audioEl = audioPlayerRef.current?.audio?.current;
     if (audioEl) {
+
       if (currentTrack.isPlaying) {
-        audioEl.play(); // Phát nhạc nếu isPlaying là true
+
+        audioEl.play();
+
+        // Phát nhạc nếu isPlaying là true
       } else {
         audioEl.pause(); // Dừng nhạc nếu isPlaying là false
       }
+      // let tmp = audioEl.currentTime
+
+      audioEl.currentTime = audioEl.currentTime + currentTrack.currentTime
+      setCurrentTrack({
+        ...currentTrack,
+        currentTime: 0
+
+      })
+
     }
 
-  }, [currentTrack.isPlaying]);
+
+  }, [currentTrack.isPlaying, currentTrack.currentTime]);
   const hasMouted = useHasMounted();
   if (!hasMouted) return (<></>)
   return (
@@ -36,11 +51,12 @@ const MainFooter = (props: any) => {
         ref={audioPlayerRef}
         style={{ boxShadow: "none", width: "99%", }}
         layout='horizontal-reverse'
-
         onPause={(e) => setCurrentTrack({ ...currentTrack, isPlaying: false })}
         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/TrackAudio/${currentTrack.url}`}
         onPlay={e => setCurrentTrack({ ...currentTrack, isPlaying: true })}
       // autoPlayAfterSrcChange={false}
+
+
 
       />
 
@@ -49,8 +65,8 @@ const MainFooter = (props: any) => {
       </div> */}
 
       <div style={{ color: "black", width: "10%" }}>
-        <div>Eric</div>
-        <div>Who am I?</div>
+        <div>{currentTrack.title}</div>
+        <div>{currentTrack.description}</div>
       </div>
 
     </AppBar>

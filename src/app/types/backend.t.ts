@@ -53,7 +53,8 @@ declare global {
         description: string,
         url: string,
         imgUrl: string,
-        category: string
+        category: string,
+
     }
     interface ITrackContext {
         currentTrack: IShareTrack,
@@ -61,6 +62,7 @@ declare global {
     }
     interface IShareTrack extends ITrack {
         isPlaying: boolean
+        currentTime: number
     }
 
 }
