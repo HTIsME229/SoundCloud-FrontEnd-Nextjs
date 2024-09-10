@@ -4,7 +4,6 @@ import { useSearchParams } from "next/navigation"
 import WaveSurfer from "wavesurfer.js"
 
 import WaveTrack from "@/components/track/wavetrack"
-import MusicPlayerSlider from "@/components/track/boxplaytrack"
 import { Box, Container } from "@mui/material"
 const trackDetail = (props: any) => {
 

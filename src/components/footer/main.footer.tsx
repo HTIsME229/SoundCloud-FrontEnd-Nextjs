@@ -4,33 +4,54 @@ import 'react-h5-audio-player/lib/styles.css';
 import { AppBar, Box, Container } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useHasMounted } from '@/app/utils/cutomhook';
-import { useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import test from 'node:test';
+import { TrackContext } from '@/lib/track.wrapper';
 const MainFooter = (props: any) => {
+  const { currentTrack, setCurrentTrack } = useContext(TrackContext) as ITrackContext
+  const audioPlayerRef = useRef<any>(null);
 
+  useEffect(() => {
+    const audioEl = audioPlayerRef.current?.audio?.current;
+    if (audioEl) {
+      if (currentTrack.isPlaying) {
+        audioEl.play(); // Phát nhạc nếu isPlaying là true
+      } else {
+        audioEl.pause(); // Dừng nhạc nếu isPlaying là false
+      }
+    }
 
-  console.log(" check ", process.env.NEXT_PUBLIC_BACKEND_URL)
-
-
+  }, [currentTrack.isPlaying]);
   const hasMouted = useHasMounted();
   if (!hasMouted) return (<></>)
   return (
-    <AppBar position='fixed' sx={{ bottom: "0", top: "auto", background: "#fff" }} >
+    <AppBar position='fixed' sx={{
+      " .rhap_main": {
+        gap: "50px"
+      }, display: "flex", justifyContent: 'space-between', flexDirection: "row", gap: "50px",
+      bottom: "0", top: "auto", background: "#fff"
+    }} >
 
       <AudioPlayer
+        ref={audioPlayerRef}
         style={{ boxShadow: "none", width: "99%", }}
+        layout='horizontal-reverse'
 
-        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/TrackAudio/1724498742351-VuaHanVuaYeu-TrungTu-15121915.mp3`}
-        onPlay={e => console.log("onPlay")}
+        onPause={(e) => setCurrentTrack({ ...currentTrack, isPlaying: false })}
+        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/TrackAudio/${currentTrack.url}`}
+        onPlay={e => setCurrentTrack({ ...currentTrack, isPlaying: true })}
+      // autoPlayAfterSrcChange={false}
 
       />
-      <div style={{ color: "black" }}>
 
-
+      {/* <div style={{ color: "black" }}>
         <span onClick={() => props.setShowFooter(false)}><CloseIcon sx={{ position: "absolute", top: "0", right: "2px", zIndex: "10" }} ></CloseIcon></span>
+      </div> */}
+
+      <div style={{ color: "black", width: "10%" }}>
+        <div>Eric</div>
+        <div>Who am I?</div>
       </div>
-
-
 
     </AppBar>
 

@@ -7,6 +7,8 @@ import ThemeRegistry from '@/components/theme-registry/theme.registry';
 import { useState } from 'react';
 import { SessionProvider } from "next-auth/react"
 import NextAuthWrapper from '@/lib/next.auth.wrapper';
+import { ToastProvider } from './utils/toast';
+import { TrackContextProvider } from '@/lib/track.wrapper';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // const [showFooter, setShowFooter] = useState(true)
   return (
@@ -14,7 +16,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body style={{ height: '100vh' }}>
         <ThemeRegistry>
           <NextAuthWrapper >
-            {children}
+            <ToastProvider>
+              <TrackContextProvider>
+                {children}
+              </TrackContextProvider>
+
+            </ToastProvider>
           </NextAuthWrapper>
         </ThemeRegistry>
       </body>

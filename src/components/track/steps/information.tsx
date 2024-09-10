@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/app/utils/api";
+import { useToast } from "@/app/utils/toast";
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#fff',
     ...theme.typography.body2,
@@ -20,6 +21,7 @@ interface Iprops {
     trackUpload: string,
     percent: number
     setPercent: (e: number) => void
+    setValue: (v: number) => void;
 }
 function SlideTransition(props: SlideProps) {
     return <Slide {...props} direction="down" />;
@@ -42,7 +44,7 @@ const Information = (props: Iprops) => {
     );
     const [err, setErr] = useState("")
     const [imgUrl, setImgUrl] = useState("")
-
+    const toast = useToast()
     const handleCreateTrack = async () => {
 
 
@@ -68,13 +70,15 @@ const Information = (props: Iprops) => {
         )
 
         if (res.data) {
-            setOpen(true)
+            // setOpen(true)
+            toast.success(res.message)
+            props.setValue(0)
 
         }
         else {
-
-            setErr(res.message)
-            setOpenErr(true)
+            toast.error(res.message[0])
+            // setErr(res.message)
+            // setOpenErr(true)
         }
     }
     useEffect(() => {

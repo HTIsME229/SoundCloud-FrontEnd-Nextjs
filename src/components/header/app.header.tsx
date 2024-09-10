@@ -112,7 +112,7 @@ export default function AppHeader() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem ><Link href="/profile">Profile</Link></MenuItem>
+      <MenuItem ><Link href={`/profile/${session?.user.id}`}>Profile</Link></MenuItem>
       <MenuItem onClick={() => {
         handleMenuClose
         signOut()
@@ -207,13 +207,13 @@ export default function AppHeader() {
             <Box sx={{ display: { xs: 'none', md: 'flex' }, "a": { color: "unset", textDecoration: "none" } }}>
               {session && session !== undefined ? <>
                 <MenuItem >
-                  <Typography textAlign="center"><Link href="/playlist" >Playlists</Link></Typography>
+                  <Link href="/playlist" >Playlists</Link>
                 </MenuItem>
                 <MenuItem >
-                  <Typography textAlign="center"><Link href="/track/upload">Upload</Link></Typography>
+                  <Link href="/track/upload">Upload</Link>
                 </MenuItem>
                 <MenuItem >
-                  <Typography textAlign="center"><Link href="/like">Likes</Link></Typography>
+                  <Link href="/like">Likes</Link>
                 </MenuItem>
                 <Avatar onClick={handleProfileMenuOpen}
                   sx={{

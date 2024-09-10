@@ -41,7 +41,7 @@ declare global {
         result: T[]
     }
     interface ITrack {
-        "id": number,
+        "id": string,
         "title": string,
         "description": string,
         "url": string,
@@ -54,6 +54,13 @@ declare global {
         url: string,
         imgUrl: string,
         category: string
+    }
+    interface ITrackContext {
+        currentTrack: IShareTrack,
+        setCurrentTrack: (v: IShareTrack) => void
+    }
+    interface IShareTrack extends ITrack {
+        isPlaying: boolean
     }
 
 }

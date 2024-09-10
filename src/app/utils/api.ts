@@ -6,7 +6,7 @@ export const sendRequest = async <T>(props: IRequest) => {
         url,
         method,
         body,
-        queryParams = {},
+        queryParams = null,
         useCredentials = false,
         headers = {},
         nextOption = {}
@@ -17,6 +17,7 @@ export const sendRequest = async <T>(props: IRequest) => {
         // by default setting the content-type to be json type
         headers: new Headers({ 'content-type': 'application/json', ...headers }),
         body: body ? JSON.stringify(body) : null,
+
         ...nextOption
     };
     if (useCredentials) options.credentials = "include";
@@ -29,6 +30,7 @@ export const sendRequest = async <T>(props: IRequest) => {
 
     return fetch(url, options).then(res => {
         if (res.ok) {
+            console.log("check url", url)
 
             return res.json() as T;
 
@@ -75,6 +77,7 @@ export const sendRequestFile = async <T>(props: IRequest) => {
 
     return fetch(url, options).then(res => {
         if (res.ok) {
+
 
             return res.json() as T;
 
