@@ -13,7 +13,8 @@ export const TrackContextProvider = ({ children }: { children: React.ReactNode }
         imgUrl: "",
         category: "",
         isPlaying: false,
-        currentTime: -0
+        currentTime: -0,
+        time: 0
 
 
     }
@@ -21,10 +22,11 @@ export const TrackContextProvider = ({ children }: { children: React.ReactNode }
     const [currentTrack, setCurrentTrack] = useState<IShareTrack>(
         initValue
     )
+    const [time, setTime] = useState<number>(0)
 
 
     return (
-        <TrackContext.Provider value={{ currentTrack, setCurrentTrack }}>
+        <TrackContext.Provider value={{ currentTrack, setCurrentTrack, time, setTime }}>
             {children}
         </TrackContext.Provider>
     )

@@ -59,10 +59,34 @@ declare global {
     interface ITrackContext {
         currentTrack: IShareTrack,
         setCurrentTrack: (v: IShareTrack) => void
+        time: number,
+        setTime: (v: number | undefined) => void
     }
     interface IShareTrack extends ITrack {
         isPlaying: boolean
         currentTime: number
+        time: number
+    }
+    interface Comment {
+        id: number,
+        content: string,
+        moment: number,
+        create_at: string,
+        update_at: string,
+        user: {
+            id: number,
+            email: string,
+            name: string,
+            role: string,
+            type: string
+        },
+        track: {
+            id: number,
+            title: string,
+            description: string,
+            url: string
+        },
+        deleted: boolean
     }
 
 }

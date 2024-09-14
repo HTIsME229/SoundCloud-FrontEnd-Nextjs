@@ -16,7 +16,7 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
             },
             queryParams: {
                 page: "1",
-                size: '10'
+                size: '11'
             },
             nextOption: {
                 cache: 'no-store',
@@ -24,8 +24,9 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
 
 
         }
-
     )
+    console.log(res.data)
+
 
     return (
         <div>

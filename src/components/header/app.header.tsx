@@ -21,6 +21,7 @@ import Avatar from '@mui/material/Avatar';
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { fetchDefaultImage } from '@/app/utils/api';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -215,10 +216,10 @@ export default function AppHeader() {
                 <MenuItem >
                   <Link href="/like">Likes</Link>
                 </MenuItem>
-                <Avatar onClick={handleProfileMenuOpen}
+                <Avatar src={fetchDefaultImage(session.user.type)} onClick={handleProfileMenuOpen}
                   sx={{
                     marginLeft: "10px"
-                  }}>HT</Avatar></> : <Typography textAlign="center"><Link href="#" onClick={() => signIn()}>Login</Link></Typography>
+                  }}></Avatar></> : <Typography textAlign="center"><Link href="#" onClick={() => signIn()}>Login</Link></Typography>
               }
 
             </Box>

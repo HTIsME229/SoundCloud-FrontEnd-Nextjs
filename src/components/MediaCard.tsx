@@ -12,6 +12,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { TrackContext } from '@/lib/track.wrapper';
 import PauseIcon from '@mui/icons-material/Pause';
+import Link from 'next/link';
 interface Iprops {
   id: string
   title: string,
@@ -70,10 +71,14 @@ export default function MediaControlCard(props: Iprops) {
   return (
     <Card sx={{ display: 'flex', justifyContent: "space-between" }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="div" variant="h5">
-            {props.title}
-          </Typography>
+        <CardContent sx={{ flex: '1 0 auto', }}>
+
+          <Link onClick={handlePlay} style={{ textDecoration: "none", color: 'black' }} href={`/track/${props.id}?audio=${props.url}`} >
+            <Typography component="div" variant="h5">
+              {props.title}
+            </Typography>
+          </Link>
+
           <Typography
             variant="subtitle1"
             component="div"

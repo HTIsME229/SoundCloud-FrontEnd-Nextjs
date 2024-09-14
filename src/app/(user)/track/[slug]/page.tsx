@@ -1,24 +1,56 @@
-'use client'
-
-import { useSearchParams } from "next/navigation"
-import WaveSurfer from "wavesurfer.js"
 
 import WaveTrack from "@/components/track/wavetrack"
 import { Box, Container } from "@mui/material"
-const trackDetail = (props: any) => {
+import { sendRequest } from "@/app/utils/api"
+import Comment from "@/components/Comment/comment"
+const trackDetail = async (props: any) => {
 
-    const searchParams = useSearchParams()
-    const name = searchParams.get("audio")
+    const { params } = props
+
+
+
+    const res = await sendRequest<IBackendRes<ITrack>>(
+        {
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/tracks/${params.slug}`,
+            method: "Get",
+            nextOption: {
+                cache: 'no-store',
+            }
+        }
+
+
+    )
+    const comments = await sendRequest<IBackendRes<IModelPaginate<Comment>>>(
+        {
+            queryParams: {
+                "page": 1,
+                "size": 10,
+                "trackId": params.slug,
+                "sort": "createAt,desc"
+            },
+
+            url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/tracks/comments`,
+            method: "get",
+            nextOption: {
+                cache: 'no-store',
+
+            }
+
+
+        }
+
+    )
 
     return (
 
+
+
         <Container sx={{ marginTop: "50px", }
         }>
-            <Box sx={{ background: "#333", padding: "155px 400px 20px 30px", position: "relative", }}>
 
-                <WaveTrack name={name ? name : ""} ></WaveTrack>
-                <img src="" alt="" style={{ width: "214px", height: "222px", position: "absolute", top: "53px", right: "88px" }} />
-            </Box>
+
+            <WaveTrack arrComments={comments?.data?.result} data={res?.data ?? null} ></WaveTrack>
+
 
         </Container >
 

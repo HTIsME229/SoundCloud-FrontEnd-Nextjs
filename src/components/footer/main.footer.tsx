@@ -40,36 +40,49 @@ const MainFooter = (props: any) => {
   const hasMouted = useHasMounted();
   if (!hasMouted) return (<></>)
   return (
-    <AppBar position='fixed' sx={{
-      " .rhap_main": {
-        gap: "50px"
-      }, display: "flex", justifyContent: 'space-between', flexDirection: "row", gap: "50px",
-      bottom: "0", top: "auto", background: "#fff"
-    }} >
+    <>
+      {currentTrack && currentTrack.id &&
 
-      <AudioPlayer
-        ref={audioPlayerRef}
-        style={{ boxShadow: "none", width: "99%", }}
-        layout='horizontal-reverse'
-        onPause={(e) => setCurrentTrack({ ...currentTrack, isPlaying: false })}
-        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/TrackAudio/${currentTrack.url}`}
-        onPlay={e => setCurrentTrack({ ...currentTrack, isPlaying: true })}
-      // autoPlayAfterSrcChange={false}
+        <AppBar position='fixed' sx={{
+          " .rhap_main": {
+            gap: "50px"
+          }, display: "flex", justifyContent: 'space-between', flexDirection: "row", gap: "50px",
+          bottom: "0", top: "auto", background: "#fff"
+        }} >
+
+          <AudioPlayer
+            ref={audioPlayerRef}
+            style={{ boxShadow: "none", width: "99%", }}
+            layout='horizontal-reverse'
+            onPause={(e) => {
+              console.log("check pa")
+              setCurrentTrack({ ...currentTrack, isPlaying: false })
+            }
+            }
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/TrackAudio/${currentTrack.url}`}
+            onPlay={e => {
+              console.log("check st")
+              setCurrentTrack({ ...currentTrack, isPlaying: true })
+            }
+            }
+          // autoPlayAfterSrcChange={false}
 
 
 
-      />
+          />
 
-      {/* <div style={{ color: "black" }}>
+          {/* <div style={{ color: "black" }}>
         <span onClick={() => props.setShowFooter(false)}><CloseIcon sx={{ position: "absolute", top: "0", right: "2px", zIndex: "10" }} ></CloseIcon></span>
       </div> */}
 
-      <div style={{ color: "black", width: "10%" }}>
-        <div>{currentTrack.title}</div>
-        <div>{currentTrack.description}</div>
-      </div>
+          <div style={{ color: "black", width: "10%" }}>
+            <div>{currentTrack.title}</div>
+            <div>{currentTrack.description}</div>
+          </div>
 
-    </AppBar>
+        </AppBar>
+      }
+    </>
 
 
   )
