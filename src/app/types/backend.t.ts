@@ -41,12 +41,14 @@ declare global {
         result: T[]
     }
     interface ITrack {
-        "id": string,
-        "title": string,
-        "description": string,
-        "url": string,
-        "imgUrl": string,
-        "category": string
+        id: string,
+        title: string,
+        description: string,
+        url: string,
+        imgUrl: string,
+        category: string,
+        countPlay: number,
+        countLike: number
     }
     interface INewTrack {
         title: string,

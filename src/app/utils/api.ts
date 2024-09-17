@@ -93,10 +93,10 @@ export const sendRequestFile = async <T>(props: IRequest) => {
         }
     });
 };
-export const fetchDefaultImage = (TYPE: string) => {
+export const fetchDefaultImage = (TYPE: string | undefined) => {
 
-    if (TYPE.toLowerCase() === "github") return "/user/default-github.png"
-    if (TYPE.toLowerCase() == "google") return "/user/default-google.png"
+    if (TYPE?.toLowerCase() === "github") return "/user/default-github.png"
+    if (TYPE?.toLowerCase() == "google") return "/user/default-google.png"
     return "/user/default-user.png"
 
 

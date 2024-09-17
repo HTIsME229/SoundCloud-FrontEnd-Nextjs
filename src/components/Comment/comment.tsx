@@ -37,7 +37,7 @@ const Comment = (props: Iprops) => {
             }} fullWidth id="standard-basic" label="Comment" variant="standard" />
             <Grid marginTop={2} container spacing={4}>
                 <Grid sx={{ paddingTop: "0", display: "flex", flexDirection: "column", alignItems: 'center' }} xs={3} md={3}>
-                    <Avatar sx={{ width: "150px", height: "150px" }} src="/user/default-user.png"></Avatar>
+                    <Avatar sx={{ width: "150px", height: "150px" }} src={fetchDefaultImage(session?.user?.type)}></Avatar>
                     <Typography sx={{ overflow: "hidden", mt: "10px" }}>{session?.user.email}</Typography>
                 </Grid>
                 <Grid sx={{ flexDirection: "column", rowGap: "30px" }} container xs={9} md={9}>

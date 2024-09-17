@@ -75,9 +75,9 @@ const MainFooter = (props: any) => {
         <span onClick={() => props.setShowFooter(false)}><CloseIcon sx={{ position: "absolute", top: "0", right: "2px", zIndex: "10" }} ></CloseIcon></span>
       </div> */}
 
-          <div style={{ color: "black", width: "10%" }}>
-            <div>{currentTrack.title}</div>
-            <div>{currentTrack.description}</div>
+          <div style={{ color: "black", width: "10%", }}>
+            <div style={{ overflow: 'hidden', textOverflow: "ellipsis" }} >{currentTrack.title}</div>
+            <div style={{ overflow: 'hidden', textOverflow: "ellipsis" }}>{currentTrack.description}</div>
           </div>
 
         </AppBar>

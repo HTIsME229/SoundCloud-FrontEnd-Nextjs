@@ -6,17 +6,20 @@ import "./wave.scss"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import { Key } from "@mui/icons-material"
-import { Box, Tooltip } from "@mui/material"
+import { Box, Chip, Tooltip } from "@mui/material"
 import { TrackContext } from "@/lib/track.wrapper"
 import { fetchDefaultImage } from "@/app/utils/api"
 import { sendRequest } from "@/app/utils/api"
 import Comment from "@/components/Comment/comment"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 interface Iprops {
     data: ITrack | null;
+    TrackLike: ITrack[] | undefined;
     arrComments: Comment[] | undefined
+
 }
 
 
@@ -29,49 +32,6 @@ const WaveTrack = (props: Iprops) => {
     const { currentTrack, setCurrentTrack } = useContext(TrackContext) as ITrackContext
     const { data: session } = useSession()
     const router = useRouter()
-    const handlePostComment = async (v: string) => {
-
-        const res = await sendRequest<IBackendRes<ITrack>>(
-            {
-
-                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/comments`,
-                method: "Post",
-                body: {
-                    content: v,
-                    moment: waveSurfer?.getCurrentTime(),
-                    track_id: props.data?.id
-
-
-                },
-                headers: {
-                    Authorization: `Bearer ${session?.access_token}`,
-
-                }
-
-            }
-
-        )
-        if (res.data) {
-            router.refresh()
-
-        }
-
-    }
-
-    const jumpToTime = (v: number) => {
-        if (waveSurfer) {
-            waveSurfer?.setTime(v)
-            if (!waveSurfer?.isPlaying()) {
-                waveSurfer?.play()
-                setIsPlaying(true)
-            }
-
-        }
-
-    }
-
-
-
     const optionsmemo = useMemo((): Omit<WaveSurferOptions, "container"> => {
         let gradient, progressGradient;
         if (typeof window !== "undefined") {
@@ -104,22 +64,11 @@ const WaveTrack = (props: Iprops) => {
     }, [])
 
     const waveSurfer = useWaveSurfer(containerRef, optionsmemo)
-
     const timeEl = timeRef.current!;
     const durationEl = durationRef.current!;
-    if (waveSurfer) {
-        waveSurfer.on('decode', (duration) => (durationEl.textContent = FormatTime(duration)))
-        waveSurfer.on('timeupdate', (currentTime) => (timeEl.textContent = FormatTime(currentTime)))
-        waveSurfer.once('interaction', () => {
-            waveSurfer.play()
-            setIsPlaying(true)
-        })
-
-    }
     const hover = hoverRef.current!;
     const waveform = containerRef.current!;
-    if (waveform)
-        waveform.addEventListener('pointermove', (e) => (hover.style.width = `${e.offsetX}px`))
+    const [like, setLike] = useState(1)
 
     const onPlayPause = useCallback(() => {
         if (waveSurfer) {
@@ -133,45 +82,105 @@ const WaveTrack = (props: Iprops) => {
             }
         }
     }, [waveSurfer])
-
-    useEffect(() => {
-        if (waveSurfer) {
-            if (currentTrack.isPlaying) {
-                waveSurfer.pause();
-                setIsPlaying(false)
-            }
-        }
-    }, [currentTrack.isPlaying])
-    // useEffect(() => {
-    //     setTime(waveSurfer?.getCurrentTime())
-
-    // }, [])
-    useEffect(() => {
-
-        if (props.data)
-            if (!currentTrack.id && props.data.id)
-                setCurrentTrack({
-                    ...currentTrack,
-                    url: props?.data?.url,
-                    title: props.data.title,
-                    description: props.data.description,
-                    id: props.data.id
-
-
-                })
-    }, [props.data])
-
-
     const calLeft = (moment: number) => {
-        const total = 157
+        const total = waveSurfer?.getDuration()!;
         const percent = moment / total * 100;
         return percent
 
 
     }
+    const handlePostComment = async (v: string) => {
+
+        const res = await sendRequest<IBackendRes<ITrack>>(
+            {
+
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/comments`,
+                method: "Post",
+                body: {
+                    content: v,
+                    moment: waveSurfer?.getCurrentTime(),
+                    track_id: props.data?.id
+
+
+                },
+                headers: {
+                    Authorization: `Bearer ${session?.access_token}`,
+
+                }
+
+            }
+
+        )
+        if (res.data) {
+            router.refresh()
+
+        }
+
+    }
+    const jumpToTime = (v: number) => {
+        if (waveSurfer) {
+            waveSurfer?.setTime(v)
+            if (!waveSurfer?.isPlaying()) {
+                waveSurfer?.play()
+                setIsPlaying(true)
+            }
+
+        }
+
+    }
+    const handleLike = async () => {
+        const res = await sendRequest<any>(
+            {
+
+                url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/likes`,
+                method: "post",
+                body: {
+                    track: props.data?.id,
+                    quantity: like
+                },
+                headers: {
+                    Authorization: `Bearer ${session?.access_token}`,
+
+                }
+
+            }
+        )
+        if (res.statusCode < 400) {
+
+            router.refresh()
+        }
+
+    }
+    useEffect(() => {
+        if (props.TrackLike) {
+
+            if (props?.TrackLike?.length > 0) {
+                const isLiked = props.TrackLike.some(e => e.id == props?.data?.id);
+                if (isLiked)
+                    setLike(-1)
+                else
+                    setLike(1)
+            }
+            else setLike(1)
+        }
+
+
+    }, [props.data, props.TrackLike])
+    if (waveSurfer) {
+        waveSurfer.on('decode', (duration) => (durationEl.textContent = FormatTime(duration)))
+        waveSurfer.on('timeupdate', (currentTime) => (timeEl.textContent = FormatTime(currentTime)))
+        waveSurfer.once('interaction', () => {
+            waveSurfer.play()
+            setIsPlaying(true)
+        })
+
+    }
+
+    if (waveform)
+        waveform.addEventListener('pointermove', (e) => (hover.style.width = `${e.offsetX}px`))
     return (
         <>
-            <Box sx={{ background: "#333", padding: "155px 400px 20px 30px", position: "relative", mb: '50px' }}>
+            <Box sx={{ background: "#333", padding: "155px 400px 20px 30px", position: "relative", mb: '30px' }}>
 
                 <div>
                     <div ref={containerRef} className="waveform">
@@ -229,7 +238,23 @@ const WaveTrack = (props: Iprops) => {
                 <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/images/${props.data?.imgUrl}`} alt="" style={{ width: "214px", height: "222px", position: "absolute", top: "53px", right: "88px" }} />
 
             </Box>
+            <Box sx={{ display: "flex", justifyContent: "space-between", mb: '20px' }}>
+                <Chip onClick={() => handleLike()} icon={<FavoriteIcon />} label="Likes" color={like === 1 ? "primary" : "error"} />
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px" }} >
+                    <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
 
+                        <FavoriteIcon ></FavoriteIcon>
+                        <span>{props.data?.countLike}</span>
+                    </div>
+
+                    <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+
+                        <PlayArrowIcon></PlayArrowIcon>
+                        <span>{props.data?.countPlay}</span>
+                    </div>
+
+                </div>
+            </Box>
             <Comment arrComments={props.arrComments}
                 handlePostComment={handlePostComment}
                 jumpToTime={jumpToTime}
