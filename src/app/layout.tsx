@@ -9,20 +9,23 @@ import { SessionProvider } from "next-auth/react"
 import NextAuthWrapper from '@/lib/next.auth.wrapper';
 import { ToastProvider } from './utils/toast';
 import { TrackContextProvider } from '@/lib/track.wrapper';
+import NProgressWrapper from '@/lib/progess.bar.wrapper';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // const [showFooter, setShowFooter] = useState(true)
   return (
     <html lang="en">
       <body style={{ height: '100vh' }}>
         <ThemeRegistry>
-          <NextAuthWrapper >
-            <ToastProvider>
-              <TrackContextProvider>
-                {children}
-              </TrackContextProvider>
+          <NProgressWrapper>
+            <NextAuthWrapper >
+              <ToastProvider>
+                <TrackContextProvider>
+                  {children}
+                </TrackContextProvider>
 
-            </ToastProvider>
-          </NextAuthWrapper>
+              </ToastProvider>
+            </NextAuthWrapper>
+          </NProgressWrapper>
         </ThemeRegistry>
       </body>
     </html>

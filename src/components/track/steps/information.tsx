@@ -9,6 +9,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { sendRequest } from "@/app/utils/api";
 import { useToast } from "@/app/utils/toast";
+import Image from "next/image";
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#fff',
     ...theme.typography.body2,
@@ -101,7 +102,8 @@ const Information = (props: Iprops) => {
             <Box sx={{ flexGrow: 1, padding: "50px 50px" }}>
                 <Grid container spacing={2}>
                     <Grid sx={{ textAlign: 'center' }} item xs={4} md={4}>
-                        <img style={{ width: "250px", height: '250px', marginBottom: "20px" }} src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/images/${imgUrl}`} alt="" />
+                        <Image width={250} height={250} style={{ marginBottom: "20px" }} src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/images/${imgUrl}`} alt=""></Image>
+
                         <InputFileUpload target="images" setImgUrl={setImgUrl} ></InputFileUpload>
                     </Grid>
                     <Grid item xs={8} md={8}>

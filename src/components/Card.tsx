@@ -1,8 +1,6 @@
 'use client'
-import { Card, Grid } from "@mui/material"
+import Grid from "@mui/material/Grid"
 import MediaControlCard from "./MediaCard"
-import { useContext, useEffect } from "react"
-import { TrackContext } from "@/lib/track.wrapper"
 
 interface Iprops {
     data: IModelPaginate<ITrack> | undefined

@@ -37,7 +37,7 @@ const Comment = (props: Iprops) => {
             }} fullWidth id="standard-basic" label="Comment" variant="standard" />
             <Grid marginTop={2} container spacing={4}>
                 <Grid sx={{ paddingTop: "0", display: "flex", flexDirection: "column", alignItems: 'center' }} xs={3} md={3}>
-                    <Avatar sx={{ width: "150px", height: "150px" }} src={fetchDefaultImage(session?.user?.type)}></Avatar>
+                    <Avatar sx={{ width: "150px", height: "150px" }} src={fetchDefaultImage(session?.user?.type)} alt="avatar"></Avatar>
                     <Typography sx={{ overflow: "hidden", mt: "10px" }}>{session?.user.email}</Typography>
                 </Grid>
                 <Grid sx={{ flexDirection: "column", rowGap: "30px" }} container xs={9} md={9}>
@@ -47,7 +47,7 @@ const Comment = (props: Iprops) => {
                                 <Box sx={{ display: 'flex', justifyContent: "space-between", gap: 2 }}>
 
                                     <Box sx={{ display: 'flex', justifyContent: "start", gap: 2 }}>
-                                        <Avatar sx={{ width: "50px", height: "50px" }} src={fetchDefaultImage(item.user.type)}></Avatar>
+                                        <Avatar sx={{ width: "50px", height: "50px" }} src={fetchDefaultImage(item.user.type)} alt="avatar"></Avatar>
                                         <div>
                                             <Typography sx={{ fontSize: "13px", cursor: "pointer" }}  >{item.user.email} at <span onClick={() => {
                                                 if (props.jumpToTime)

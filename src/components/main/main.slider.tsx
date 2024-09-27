@@ -9,6 +9,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Divider from '@mui/material/Divider';
 import Link from "next/link";
+import { ConvertSlug } from "@/app/utils/api";
+import Image from "next/image";
 interface IProps {
     data: ITrack[],
     title: string
@@ -60,7 +62,33 @@ const MainSlider = (props: IProps) => {
         slidesToScroll: 1,
         arrows: true,
         nextArrow: <NextArrow />,
-        prevArrow: <PrevArrow></PrevArrow>
+        prevArrow: <PrevArrow></PrevArrow>,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    initialSlide: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
 
 
     };
@@ -91,8 +119,12 @@ const MainSlider = (props: IProps) => {
                 {data && data.map((item) => {
                     return (
                         <div className="track" key={item.id}>
-                            <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/images/${item.imgUrl}`} alt="" />
-                            <Link href={`/track/${item.id}?audio=${item.url}`}>
+                            <div style={{ height: "230px", width: 'auto', position: "relative" }}>
+                                <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/images/${item.imgUrl}`} alt="sdasd" fill style={{ objectFit: "contain" }}></Image>
+
+                            </div>
+
+                            <Link href={`/track/${ConvertSlug(item.title)}-${item.id}.html`}>
                                 <h4>{item.title}
 
                                 </h4>

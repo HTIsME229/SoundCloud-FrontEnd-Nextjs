@@ -1,4 +1,5 @@
 import queryString from 'query-string';
+import slugify from 'slugify';
 import { json } from 'stream/consumers';
 
 export const sendRequest = async <T>(props: IRequest) => {
@@ -121,4 +122,9 @@ export const num2time = (seconds: number) => {
     } else {
         return `${formattedMinutes}:${formattedSeconds}`;
     }
+}
+export const ConvertSlug = (s: string) => {
+    if (!s) return ""
+    return slugify(`${s}`, { lower: true, locale: "vi" });
+
 }

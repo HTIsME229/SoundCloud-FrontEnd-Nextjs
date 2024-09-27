@@ -1,5 +1,6 @@
 'use client';
 
+import { count } from "console";
 import { createContext, useContext, useState } from "react";
 
 export const TrackContext = createContext({})
@@ -12,9 +13,10 @@ export const TrackContextProvider = ({ children }: { children: React.ReactNode }
         url: "",
         imgUrl: "",
         category: "",
+        countLike: 0,
+        countPlay: 0,
         isPlaying: false,
         currentTime: -0,
-        time: 0
 
 
     }

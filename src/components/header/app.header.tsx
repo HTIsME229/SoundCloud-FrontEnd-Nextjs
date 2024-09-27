@@ -216,7 +216,7 @@ export default function AppHeader() {
                 <MenuItem >
                   <Link href="/like">Likes</Link>
                 </MenuItem>
-                <Avatar src={fetchDefaultImage(session.user.type)} onClick={handleProfileMenuOpen}
+                <Avatar src={fetchDefaultImage(session.user.type)} alt='avatar' onClick={handleProfileMenuOpen}
                   sx={{
                     marginLeft: "10px"
                   }}></Avatar></> : <Typography textAlign="center"><Link href="#" onClick={() => signIn()}>Login</Link></Typography>

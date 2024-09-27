@@ -1,11 +1,10 @@
 'use client'
 import { FormatTime, useWaveSurfer } from "@/app/utils/cutomhook"
 import { useEffect, useRef, useState, useMemo, useCallback, useContext } from "react"
-import WaveSurfer, { WaveSurferEvents, WaveSurferOptions } from "wavesurfer.js"
+import { WaveSurferOptions } from "wavesurfer.js"
 import "./wave.scss"
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import { Key } from "@mui/icons-material"
 import { Box, Chip, Tooltip } from "@mui/material"
 import { TrackContext } from "@/lib/track.wrapper"
 import { fetchDefaultImage } from "@/app/utils/api"
@@ -14,6 +13,7 @@ import Comment from "@/components/Comment/comment"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import Image from "next/image"
 
 interface Iprops {
     data: ITrack | null;
@@ -31,6 +31,7 @@ const WaveTrack = (props: Iprops) => {
     const [isPlaying, setIsPlaying] = useState<boolean>(false)
     const { currentTrack, setCurrentTrack } = useContext(TrackContext) as ITrackContext
     const { data: session } = useSession()
+    const firstViewRef = useRef(true)
     const router = useRouter()
     const optionsmemo = useMemo((): Omit<WaveSurferOptions, "container"> => {
         let gradient, progressGradient;
@@ -118,6 +119,7 @@ const WaveTrack = (props: Iprops) => {
 
     }
     const jumpToTime = (v: number) => {
+
         if (waveSurfer) {
             waveSurfer?.setTime(v)
             if (!waveSurfer?.isPlaying()) {
@@ -126,6 +128,33 @@ const WaveTrack = (props: Iprops) => {
             }
 
         }
+
+    }
+    const handleIncreaseView = async () => {
+        if (firstViewRef.current) {
+            const res = await sendRequest<IBackendRes<ITrack>>(
+                {
+
+                    url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/tracks/increase-view`,
+                    method: "Post",
+                    body: {
+                        track: props?.data?.id
+
+
+                    },
+                    headers: {
+                        Authorization: `Bearer ${session?.access_token}`,
+                    }
+
+                }
+
+            )
+            firstViewRef.current = false;
+            router.refresh()
+
+        }
+
+
 
     }
     const handleLike = async () => {
@@ -149,7 +178,6 @@ const WaveTrack = (props: Iprops) => {
 
             router.refresh()
         }
-
     }
     useEffect(() => {
         if (props.TrackLike) {
@@ -166,6 +194,7 @@ const WaveTrack = (props: Iprops) => {
 
 
     }, [props.data, props.TrackLike])
+
     if (waveSurfer) {
         waveSurfer.on('decode', (duration) => (durationEl.textContent = FormatTime(duration)))
         waveSurfer.on('timeupdate', (currentTime) => (timeEl.textContent = FormatTime(currentTime)))
@@ -192,16 +221,20 @@ const WaveTrack = (props: Iprops) => {
                                 props.arrComments && props.arrComments.map((item) => {
                                     return (
                                         <Tooltip title={item.content} arrow>
-                                            <img key={item.id}
-                                                style={{
-                                                    height: "18px", width: "18px", position: "absolute", bottom: '0', left: `${calLeft(item.moment)}%`, zIndex: "10"
+                                            <>
+                                                <Image src={fetchDefaultImage(item.user.type)} alt="comment" key={item.id}
+                                                    height={20} width={20}
+                                                    style={{
+                                                        position: "absolute", bottom: '0', left: `${calLeft(item.moment)}%`, zIndex: "10"
 
-                                                }
-                                                } src={fetchDefaultImage(item.user.type)} alt="" onPointerMove={(e) => {
-                                                    const hover = hoverRef.current!;
-                                                    hover.style.width = `${calLeft(item.moment)}%`
+                                                    }
+                                                    } onPointerMove={(e) => {
+                                                        const hover = hoverRef.current!;
+                                                        hover.style.width = `${calLeft(item.moment)}%`
 
-                                                }} />
+                                                    }}  ></Image>
+
+                                            </>
                                         </Tooltip>
                                     )
                                 })
@@ -211,8 +244,10 @@ const WaveTrack = (props: Iprops) => {
                     </div>
                     <div className="head">
                         <button className="button-play" onClick={() => {
+                            handleIncreaseView()
                             if (props.data)
                                 if (waveSurfer) {
+
                                     onPlayPause()
                                     setCurrentTrack({
                                         ...currentTrack,
@@ -235,7 +270,8 @@ const WaveTrack = (props: Iprops) => {
 
 
                 </div >
-                <img src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/images/${props.data?.imgUrl}`} alt="" style={{ width: "214px", height: "222px", position: "absolute", top: "53px", right: "88px" }} />
+                <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/images/${props.data?.imgUrl}`} alt="img" style={{ position: "absolute", top: "53px", right: "88px" }} width={214} height={222}></Image>
+
 
             </Box>
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: '20px' }}>

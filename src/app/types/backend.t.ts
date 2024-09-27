@@ -61,13 +61,10 @@ declare global {
     interface ITrackContext {
         currentTrack: IShareTrack,
         setCurrentTrack: (v: IShareTrack) => void
-        time: number,
-        setTime: (v: number | undefined) => void
     }
     interface IShareTrack extends ITrack {
         isPlaying: boolean
         currentTime: number
-        time: number
     }
     interface Comment {
         id: number,

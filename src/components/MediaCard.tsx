@@ -13,6 +13,7 @@ import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { TrackContext } from '@/lib/track.wrapper';
 import PauseIcon from '@mui/icons-material/Pause';
 import Link from 'next/link';
+import { ConvertSlug } from '@/app/utils/api';
 interface Iprops {
   id: string
   title: string,
@@ -73,7 +74,7 @@ export default function MediaControlCard(props: Iprops) {
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto', }}>
 
-          <Link onClick={handlePlay} style={{ textDecoration: "none", color: 'black' }} href={`/track/${props.id}?audio=${props.url}`} >
+          <Link onClick={handlePlay} style={{ textDecoration: "none", color: 'black' }} href={`/track/${ConvertSlug(props.title)}-${props.id}.html`} >
             <Typography component="div" variant="h5">
               {props.title}
             </Typography>
