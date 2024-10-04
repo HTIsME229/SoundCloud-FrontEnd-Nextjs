@@ -67,8 +67,9 @@ export default function SearchTrack(prop: Iprops) {
 
                     // const check = prop.playlist?.trackId.some(trackId => { e.id == trackId });
                     {
-                        prop.setPlaylist({
-                            ...prop.playlist,
+
+                        prop?.setPlaylist({
+                            ...prop?.playlist,
                             trackId: [...prop.playlist.trackId, e.id]
                         })
                     }
