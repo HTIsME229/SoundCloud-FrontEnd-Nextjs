@@ -25,6 +25,11 @@ export default async function HomePage() {
         "size": 10,
         "category": "CHILL"
       },
+      nextOption: {
+        next: { tags: ['uploadTrack',] }
+
+      }
+
 
     }
   )
@@ -38,7 +43,12 @@ export default async function HomePage() {
         "category": "Rap"
       },
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/tracks`,
-      method: "get"
+      method: "get",
+
+      nextOption: {
+        next: { tags: ['uploadTrack',] }
+
+      }
 
     }
   )
@@ -51,7 +61,12 @@ export default async function HomePage() {
         "category": "Workout"
       },
       url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/tracks`,
-      method: "get"
+      method: "get",
+      nextOption: {
+        next: { tags: ['uploadTrack',] }
+
+      }
+
 
     }
   )

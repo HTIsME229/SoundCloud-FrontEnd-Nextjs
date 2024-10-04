@@ -3,8 +3,10 @@ import { sendRequest } from "@/app/utils/api"
 import CardTrack from "@/components/Card";
 import { Container } from "@mui/material";
 import { getServerSession } from "next-auth";
+import { revalidateTag } from "next/cache";
 
 const ProfilePage = async ({ params }: { params: { slug: string } }) => {
+
 
     const res = await sendRequest<IBackendRes<IModelPaginate<ITrack>>>(
         {
@@ -18,15 +20,16 @@ const ProfilePage = async ({ params }: { params: { slug: string } }) => {
                 page: "1",
                 size: '11'
             },
+
             nextOption: {
-                cache: 'no-store',
+                next: { tags: ['uploadTrack',] }
+
             }
 
 
         }
     )
     console.log(res.data)
-
 
     return (
         <div>

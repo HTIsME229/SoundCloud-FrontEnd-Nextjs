@@ -71,18 +71,35 @@ const WaveTrack = (props: Iprops) => {
     const waveform = containerRef.current!;
     const [like, setLike] = useState(1)
 
+
     const onPlayPause = useCallback(() => {
-        if (waveSurfer) {
-            if (waveSurfer.isPlaying()) {
-                waveSurfer.pause()
-                setIsPlaying(false)
-            }
-            else {
-                waveSurfer.play()
-                setIsPlaying(true)
-            }
+
+        if (waveSurfer?.isPlaying()) {
+            waveSurfer.pause()
+            setIsPlaying(false)
+
+
         }
-    }, [waveSurfer])
+        else {
+            waveSurfer?.play()
+            setIsPlaying(true)
+
+
+        }
+
+
+
+    }, [waveSurfer, currentTrack])
+
+    useEffect(() => {
+        console.log(currentTrack.wavesurfer)
+        if (!currentTrack.wavesurfer && waveSurfer?.isPlaying()) {
+            console.log('check chay')
+            waveSurfer?.pause()
+            setIsPlaying(false)
+        }
+
+    }, [currentTrack])
     const calLeft = (moment: number) => {
         const total = waveSurfer?.getDuration()!;
         const percent = moment / total * 100;
@@ -176,6 +193,14 @@ const WaveTrack = (props: Iprops) => {
         )
         if (res.statusCode < 400) {
 
+            const revalidate = await sendRequest<any>(
+                {
+
+                    url: `http://localhost:3000/api/revalidate?tag=like-track&secret=HTISME`,
+                    method: "Post",
+
+                }
+            )
             router.refresh()
         }
     }
@@ -194,6 +219,7 @@ const WaveTrack = (props: Iprops) => {
 
 
     }, [props.data, props.TrackLike])
+
 
     if (waveSurfer) {
         waveSurfer.on('decode', (duration) => (durationEl.textContent = FormatTime(duration)))
@@ -247,12 +273,13 @@ const WaveTrack = (props: Iprops) => {
                             handleIncreaseView()
                             if (props.data)
                                 if (waveSurfer) {
-
-                                    onPlayPause()
                                     setCurrentTrack({
                                         ...currentTrack,
                                         isPlaying: false,
+                                        wavesurfer: true
                                     })
+                                    onPlayPause()
+
 
                                 }
 

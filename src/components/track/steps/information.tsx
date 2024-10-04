@@ -10,6 +10,9 @@ import { useSession } from "next-auth/react";
 import { sendRequest } from "@/app/utils/api";
 import { useToast } from "@/app/utils/toast";
 import Image from "next/image";
+import { revalidateTag } from "next/cache";
+import { useRouter } from "next/navigation";
+
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#fff',
     ...theme.typography.body2,
@@ -46,6 +49,7 @@ const Information = (props: Iprops) => {
     const [err, setErr] = useState("")
     const [imgUrl, setImgUrl] = useState("")
     const toast = useToast()
+    const router = useRouter()
     const handleCreateTrack = async () => {
 
 
@@ -59,7 +63,9 @@ const Information = (props: Iprops) => {
                     category: info.category,
                     description: info.description,
                     imgUrl: info.imgUrl,
-                    url: info.url
+                    url: info.url,
+                    count_like: 0,
+                    count_play: 0
 
                 },
                 headers: {
@@ -74,6 +80,17 @@ const Information = (props: Iprops) => {
             // setOpen(true)
             toast.success(res.message)
             props.setValue(0)
+            const revalidate = await sendRequest<any>(
+                {
+
+                    url: `http://localhost:3000/api/revalidate?tag=uploadTrack&secret=HTISME`,
+                    method: "Post",
+
+                }
+            )
+            router.refresh();
+
+
 
         }
         else {

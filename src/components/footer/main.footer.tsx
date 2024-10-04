@@ -62,9 +62,10 @@ const MainFooter = (props: any) => {
             src={`${process.env.NEXT_PUBLIC_BACKEND_URL}upload/TrackAudio/${currentTrack.url}`}
             onPlay={e => {
               console.log("check st")
-              setCurrentTrack({ ...currentTrack, isPlaying: true })
+              setCurrentTrack({ ...currentTrack, isPlaying: true, wavesurfer: false })
             }
             }
+            autoPlay
           // autoPlayAfterSrcChange={false}
 
 

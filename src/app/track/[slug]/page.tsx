@@ -9,10 +9,21 @@ import { getServerSession } from "next-auth"
 import slugify from "slugify"
 import type { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from "next/navigation"
+import { promises } from "dns"
+import { resolve } from "path"
 
+export async function generateStaticParams() {
+    return [
+        { slug: "test-doi-ten-2.html" },
+        { slug: "test-nhac-4.html" },
+        { slug: "sdasdfa-5.html" }
+    ]
+}
 type Props = {
     params: { slug: string }
 }
+
+
 export async function generateMetadata(
     { params }: Props,
     parent: ResolvingMetadata
@@ -25,9 +36,9 @@ export async function generateMetadata(
         {
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/tracks/${id}`,
             method: "Get",
-            nextOption: {
-                cache: 'no-store',
-            }
+            // nextOption: {
+            //     cache: 'no-store',
+            // }
         }
     )
 
@@ -43,11 +54,12 @@ export async function generateMetadata(
 
     }
 }
-const trackDetail = async (props: any) => {
 
-    const { params } = props
+const trackDetail = async ({ params }: any) => {
 
-    let id = params.slug.substring(params.slug.indexOf("-") + 1, params.slug.indexOf("."));
+    const { slug } = params
+
+    let id = slug.substring(slug.lastIndexOf("-") + 1, slug.indexOf("."));
 
 
     const session = await getServerSession(authOptions);
@@ -57,12 +69,17 @@ const trackDetail = async (props: any) => {
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/tracks/${id}`,
             method: "Get",
             nextOption: {
-                cache: 'no-store',
+                next: { tags: ['like-track',] }
+
             }
+
         }
 
 
+
+
     )
+
     if (!res.data) notFound()
     const comments = await sendRequest<IBackendRes<IModelPaginate<Comment>>>(
         {
@@ -75,10 +92,7 @@ const trackDetail = async (props: any) => {
 
             url: `${process.env.NEXT_PUBLIC_BACKEND_URL}api/v1/tracks/comments`,
             method: "get",
-            nextOption: {
-                cache: 'no-store',
 
-            }
 
 
         }
@@ -100,9 +114,11 @@ const trackDetail = async (props: any) => {
 
             },
             nextOption: {
-                cache: 'no-store',
+                next: { tags: ['like-track',] }
 
             }
+
+
 
         }
     )

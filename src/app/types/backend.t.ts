@@ -18,6 +18,27 @@ declare global {
         statusCode: number | string;
         data?: T;
     }
+    interface IPlaylist {
+        id: number,
+        title: string,
+        isPublic: boolean,
+        user: {
+            id: number
+            type: string
+            username: string
+            role: string
+            isVerify: true
+            email: string,
+            address: string,
+            age: number,
+            verify: boolean
+        }
+
+    }
+    interface IPlaylistByUser extends IPlaylist {
+        tracks: ITrack[]
+    }
+
     interface IAuth {
         access_token: string,
         refresh_token: string
@@ -41,7 +62,7 @@ declare global {
         result: T[]
     }
     interface ITrack {
-        id: string,
+        id: number,
         title: string,
         description: string,
         url: string,
@@ -65,6 +86,7 @@ declare global {
     interface IShareTrack extends ITrack {
         isPlaying: boolean
         currentTime: number
+        wavesurfer: boolean
     }
     interface Comment {
         id: number,
