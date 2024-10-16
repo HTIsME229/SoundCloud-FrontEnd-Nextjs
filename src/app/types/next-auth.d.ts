@@ -14,6 +14,7 @@ declare module "next-auth" {
     interface Session {
         access_token: string,
         refresh_token: string,
+        access_expire: number,
         user: IUser
     }
 
@@ -28,6 +29,7 @@ declare module "next-auth/jwt" {
         /** The user's postal address. */
         access_token: string,
         refresh_token: string,
+        access_expire: number,
         user: IUser
 
 

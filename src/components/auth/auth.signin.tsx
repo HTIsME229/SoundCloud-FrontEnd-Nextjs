@@ -126,7 +126,7 @@ export default function SignIn() {
                 <div>
                     <Divider sx={{ width: '100%', margin: '10px auto' }}>Or Using</Divider>
                     <span onClick={() => signIn("github")}><GitHubIcon sx={{ width: '50px', height: "50px", marginRight: "50px", cursor: "pointer" }}></GitHubIcon></span>
-                    <GoogleIcon sx={{ width: '50px', height: "50px" }}></GoogleIcon>
+                    <GoogleIcon onClick={() => signIn("google")} sx={{ width: '50px', height: "50px" }}></GoogleIcon>
                 </div>
 
             </Grid>

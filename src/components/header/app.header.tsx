@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation'
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { fetchDefaultImage } from '@/app/utils/api';
 import SearchHeader from './SearchHeader';
+import ActiveLink from './ActiveLink';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -97,7 +98,7 @@ export default function AppHeader() {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
-      sx={{ "a": { color: "unset", textDecoration: "none" } }}
+      sx={{ "a": { color: "unset", textDecoration: "none" }, }}
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 'bottom',
@@ -199,16 +200,16 @@ export default function AppHeader() {
 
             </SearchHeader>
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' }, "a": { color: "unset", textDecoration: "none" } }}>
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, "a": { color: "unset", textDecoration: "none" }, "  .active": { background: "whitesmoke", color: "black", fontWeight: "bold", padding: "5px 5px", borderRadius: "10px" } }}>
               {session && session !== undefined ? <>
                 <MenuItem >
-                  <Link href="/playlist" >Playlists</Link>
+                  <ActiveLink href="/playlist">Playlists</ActiveLink>
                 </MenuItem>
                 <MenuItem >
-                  <Link href="/track/upload">Upload</Link>
+                  <ActiveLink href="/track/upload">Upload</ActiveLink>
                 </MenuItem>
                 <MenuItem >
-                  <Link href="/like">Likes</Link>
+                  <ActiveLink href="/like">Likes</ActiveLink>
                 </MenuItem>
                 <Avatar src={fetchDefaultImage(session.user.type)} alt='avatar' onClick={handleProfileMenuOpen}
                   sx={{
