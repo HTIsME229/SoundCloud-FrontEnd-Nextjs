@@ -10,22 +10,25 @@ import NextAuthWrapper from '@/lib/next.auth.wrapper';
 import { ToastProvider } from './utils/toast';
 import { TrackContextProvider } from '@/lib/track.wrapper';
 import NProgressWrapper from '@/lib/progess.bar.wrapper';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   // const [showFooter, setShowFooter] = useState(true)
   return (
     <html lang="en">
       <body style={{ height: '100vh' }}>
         <ThemeRegistry>
-          <NProgressWrapper>
-            <NextAuthWrapper >
-              <ToastProvider>
-                <TrackContextProvider>
-                  {children}
-                </TrackContextProvider>
+          <AntdRegistry>
+            <NProgressWrapper>
+              <NextAuthWrapper >
+                <ToastProvider>
+                  <TrackContextProvider>
+                    {children}
+                  </TrackContextProvider>
 
-              </ToastProvider>
-            </NextAuthWrapper>
-          </NProgressWrapper>
+                </ToastProvider>
+              </NextAuthWrapper>
+            </NProgressWrapper>
+          </AntdRegistry>
         </ThemeRegistry>
       </body>
     </html>

@@ -56,8 +56,8 @@ declare global {
         meta: {
             current: number;
             pageSize: number;
-            pages: number;
-            total: number;
+            totalsPage: number;
+            totalsItems: number;
         },
         result: T[]
     }

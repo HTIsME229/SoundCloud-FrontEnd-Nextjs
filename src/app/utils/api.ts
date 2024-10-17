@@ -13,7 +13,7 @@ export const sendRequest = async <T>(props: IRequest) => {
         nextOption = {}
     } = props;
 
-    const options: any = {
+    let options: any = {
         method: method,
         // by default setting the content-type to be json type
         headers: new Headers({ 'content-type': 'application/json', ...headers }),
@@ -21,7 +21,9 @@ export const sendRequest = async <T>(props: IRequest) => {
 
         ...nextOption
     };
+
     if (useCredentials) options.credentials = "include";
+
 
     if (queryParams != null) {
 
@@ -30,8 +32,13 @@ export const sendRequest = async <T>(props: IRequest) => {
     }
 
     return fetch(url, options).then(res => {
+        if (res.status == 204) {
+
+            const statusCode: number | string = res.status
+            return statusCode as T;
+
+        }
         if (res.ok) {
-            console.log("check url", url)
 
             return res.json() as T;
 

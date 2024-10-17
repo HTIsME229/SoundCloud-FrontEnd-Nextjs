@@ -7,6 +7,12 @@ interface IUser {
     isVerify: true
     email: string,
 }
+interface PUser {
+    id: number,
+    name: string,
+    email: string,
+    role: string
+}
 declare module "next-auth" {
     /**
      * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
